@@ -1,20 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
-
-// Bogie class
-class Bogie {
-    String name;
-    int capacity;
-
-    Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    public String toString() {
-        return name + " → Capacity: " + capacity;
-    }
-}
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -23,27 +9,46 @@ public class Main {
         // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Reuse bogie list
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General", 90));
+        Scanner scanner = new Scanner(System.in);
 
-        // Display bogies
-        System.out.println("\nTrain Bogies:");
-        bogies.forEach(System.out::println);
+        // Input from user
+        System.out.print("\nEnter Train ID: ");
+        String trainId = scanner.nextLine();
 
-        // Stream pipeline: map + reduce
-        int totalCapacity = bogies.stream()
-                .map(b -> b.capacity)          // extract capacity
-                .reduce(0, Integer::sum);      // sum all values
+        System.out.print("Enter Cargo Code: ");
+        String cargoCode = scanner.nextLine();
 
-        // Display total seating capacity
-        System.out.println("\nTotal Seating Capacity of Train: " + totalCapacity);
+        // Define regex patterns
+        String trainRegex = "TRN-\\d{4}";
+        String cargoRegex = "PET-[A-Z]{2}";
 
-        // Verify original list unchanged
-        System.out.println("\nOriginal List After Aggregation (Unchanged):");
-        bogies.forEach(System.out::println);
+        // Compile patterns
+        Pattern trainPattern = Pattern.compile(trainRegex);
+        Pattern cargoPattern = Pattern.compile(cargoRegex);
+
+        // Create matchers
+        Matcher trainMatcher = trainPattern.matcher(trainId);
+        Matcher cargoMatcher = cargoPattern.matcher(cargoCode);
+
+        // Validate inputs
+        boolean isTrainValid = trainMatcher.matches();
+        boolean isCargoValid = cargoMatcher.matches();
+
+        // Display results
+        System.out.println("\nValidation Results:");
+
+        if (isTrainValid) {
+            System.out.println("Train ID is VALID");
+        } else {
+            System.out.println("Train ID is INVALID");
+        }
+
+        if (isCargoValid) {
+            System.out.println("Cargo Code is VALID");
+        } else {
+            System.out.println("Cargo Code is INVALID");
+        }
+
+        scanner.close();
     }
-}}
+}
