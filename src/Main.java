@@ -1,69 +1,44 @@
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-// Goods Bogie Class
-class GoodsBogie {
-    String shape;   // Cylindrical, Rectangular
-    String cargo;   // Petroleum, Coal, etc.
-
-    GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    // Method to assign cargo safely
-    public void assignCargo(String cargo) {
-        try {
-            // Business rule validation
-            if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException("Unsafe: Petroleum cannot be assigned to Rectangular bogie");
-            }
-
-            // Safe assignment
-            this.cargo = cargo;
-            System.out.println("Cargo assigned successfully: " + shape + " → " + cargo);
-
-        } catch (CargoSafetyException e) {
-            // Handle exception gracefully
-            System.out.println("Error: " + e.getMessage());
-
-        } finally {
-            // Always executes
-            System.out.println("Cargo assignment attempt completed.\n");
-        }
-    }
-
-    public String toString() {
-        return shape + " → Cargo: " + (cargo != null ? cargo : "Not Assigned");
-    }
-}
-
-// Main Application
-public class TrainApp {
+public class Main {
 
     public static void main(String[] args) {
 
+        // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create bogies
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        // Array of passenger bogie capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        // Safe assignment
-        b1.assignCargo("Petroleum");
+        // Display original array
+        System.out.print("\nOriginal Capacities: ");
+        printArray(capacities);
 
-        // Unsafe assignment
-        b2.assignCargo("Petroleum");
+        // Bubble Sort Algorithm
+        int n = capacities.length;
 
-        // Another safe assignment
-        b2.assignCargo("Coal");
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
 
-        // Display final state
-        System.out.println("Final Bogie States:");
-        System.out.println(b1);
-        System.out.println(b2);
+                // Compare adjacent elements
+                if (capacities[j] > capacities[j + 1]) {
+
+                    // Swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+
+        // Display sorted array
+        System.out.print("\nSorted Capacities (Ascending): ");
+        printArray(capacities);
+    }
+
+    // Helper method to print array
+    public static void printArray(int[] arr) {
+        for (int val : arr) {
+            System.out.print(val + " ");
+        }
+        System.out.println();
     }
 }
