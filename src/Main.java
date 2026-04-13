@@ -1,38 +1,56 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
+    // Method to perform search with validation
+    public static void searchBogie(List<String> bogies, String key) {
+
+        // Defensive check (Fail-Fast)
+        if (bogies.isEmpty()) {
+            throw new IllegalStateException("Search failed: No bogies available in the train.");
+        }
+
+        // Linear search logic (can reuse UC18)
+        boolean found = false;
+
+        for (int i = 0; i < bogies.size(); i++) {
+            if (bogies.get(i).equals(key)) {
+                System.out.println("Bogie ID found at position: " + i);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Bogie ID not found in the train.");
+        }
+    }
+
     public static void main(String[] args) {
 
-        // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create ArrayList for passenger bogies
-        ArrayList<String> bogies = new ArrayList<>();
+        // Empty train (no bogies)
+        List<String> bogieList = new ArrayList<>();
 
-        // Adding bogies (Create operation)
-        bogies.add("Sleeper");
-        bogies.add("AC Chair");
-        bogies.add("First Class");
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\nEnter Bogie ID to search: ");
+        String key = scanner.nextLine();
 
-        // Display bogies after insertion (Read operation)
-        System.out.println("\nBogies after addition:");
-        System.out.println(bogies);
+        try {
+            // Attempt search
+            searchBogie(bogieList, key);
 
-        // Remove a bogie (Delete operation)
-        bogies.remove("AC Chair");
+        } catch (IllegalStateException e) {
+            // Handle fail-fast exception
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        // Display bogies after removal
-        System.out.println("\nBogies after removal of AC Chair:");
-        System.out.println(bogies);
+        // Program continues safely
+        System.out.println("\nProgram continues execution...");
 
-        // Check if a bogie exists (Search operation)
-        boolean exists = bogies.contains("Sleeper");
-
-        System.out.println("\nDoes 'Sleeper' bogie exist? " + exists);
-
-        // Final state of the list
-        System.out.println("\nFinal list of bogies:");
-        System.out.println(bogies);
+        scanner.close();
     }
 }
