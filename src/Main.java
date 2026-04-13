@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -5,40 +7,32 @@ public class Main {
         // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Array of passenger bogie capacities
-        int[] capacities = {72, 56, 24, 70, 60};
+        // Array of bogie IDs (unsorted)
+        String[] bogieIDs = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        // Display original array
-        System.out.print("\nOriginal Capacities: ");
-        printArray(capacities);
+        // Take input from user
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\nEnter Bogie ID to search: ");
+        String searchKey = scanner.nextLine();
 
-        // Bubble Sort Algorithm
-        int n = capacities.length;
+        // Linear Search
+        boolean found = false;
 
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
+        for (int i = 0; i < bogieIDs.length; i++) {
 
-                // Compare adjacent elements
-                if (capacities[j] > capacities[j + 1]) {
-
-                    // Swap
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
+            // Compare using equals()
+            if (bogieIDs[i].equals(searchKey)) {
+                found = true;
+                System.out.println("Bogie ID found at position: " + i);
+                break; // Early termination
             }
         }
 
-        // Display sorted array
-        System.out.print("\nSorted Capacities (Ascending): ");
-        printArray(capacities);
-    }
-
-    // Helper method to print array
-    public static void printArray(int[] arr) {
-        for (int val : arr) {
-            System.out.print(val + " ");
+        // Result if not found
+        if (!found) {
+            System.out.println("Bogie ID not found in the train.");
         }
-        System.out.println();
+
+        scanner.close();
     }
 }
